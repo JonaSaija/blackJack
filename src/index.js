@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-
+import Menu from "./components/Welcome/Welcome.jsx";
 const cardsData = [
   {
     name: "Ace's",
@@ -84,17 +84,67 @@ const cardsData = [
 ];
 
 function App() {
-  return <Menu />;
-}
-
-function Menu() {
   return (
-    <div className="start-menu">
-      <h1 className="game-title">Welcome to BlackJack</h1>
-      <p className="game-intro">To get started, click the "Start" button</p>
+    <div>
+      <Menu />
+      <Game />
     </div>
   );
 }
+
+// Welcome
+function Menu() {
+  return (
+    <div className="startMenuContent" id="menuContent">
+      <h1 className="game-title">Welcome to BlackJack</h1>
+      <p className="game-intro">To get started, click the "Start" button</p>
+      <button onClick={startGame} className="start-button" type="button">
+        Start
+      </button>
+    </div>
+  );
+}
+
+// Menu
+function Game() {
+  return (
+    <div className="startGameContent" id="gameContent">
+      <button onClick={hitCard} className="hit-card-button" type="button">
+        Hit
+      </button>
+      <button onClick={standCard} className="hit-card-button" type="button">
+        Stand
+      </button>
+    </div>
+
+    // <div className="startGameContent" id="gameContent">
+    //   <Card image="images/10s.png" name="10s" value={10} />
+    // </div>
+  );
+}
+
+// Card
+function Card(props) {
+  return (
+    <div className="card">
+      <img src={props.image} alt={props.name} className="card-image" />
+      <h2 className="card-name">{props.name}</h2>
+      <h3 className="card-value">{props.value}</h3>
+    </div>
+  );
+}
+
+function startGame() {
+  const menuContent = document.getElementById("menuContent");
+  const gameContent = document.getElementById("gameContent");
+
+  menuContent.style.display = "none";
+  gameContent.style.display = "block";
+}
+
+function hitCard() {}
+
+function standCard() {}
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

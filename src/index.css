@@ -1,11 +1,22 @@
-body {
+@import "./components/Card/card.css" body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+.startGameContent {
+  /* The display variable can change so it's not accurate.*/
+  display: none;
+
+  align-items: center;
+  text-align: center;
+}
+
+.startMenuContent {
+  /* The display variable can change so it's not accurate.*/
+  display: block;
+
+  align-items: center;
+  text-align: center;
 }
