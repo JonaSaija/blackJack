@@ -1,0 +1,8 @@
+.drawn-cards {
+  display: inline-flex;
+  justify-content: center;
+}
+
+.divider {
+  margin-bottom: 25px;
+}
