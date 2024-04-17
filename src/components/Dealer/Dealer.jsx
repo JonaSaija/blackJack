@@ -11,46 +11,31 @@ export default function Test() {
   const [dealerOpenCards, setDealerOpenCards] = useState([]);
   const [cards, setCards] = useState(cardsData);
   const [dealersTurn, setDealersTurn] = useState(false);
-  let maxWhileLoop = 2;
-  let indexWhileLoop = 0;
+  let maxBlackJack = 21;
 
   function switchToDealer() {
     setDealersTurn(true);
+    let counter = totalCardValueDealer;
 
     // Loop until the dealer's total card value is less than 21
-    while (indexWhileLoop < maxWhileLoop) {
-      indexWhileLoop++;
-
+    while (counter < maxBlackJack) {
       //Making a random index for the random card draw
       const newRandomIndex = Math.floor(Math.random() * cards?.length);
       setRandomCardIndex(newRandomIndex);
-      console.log(randomCardIndex);
 
       //Setting the random card that you hit to a array that saves the data of that card
       setDealerOpenCards((prevalue) => [...prevalue, cards?.[newRandomIndex]]);
 
       //For calculating cards value combined
-      const newValue = totalCardValueDealer + cards?.[newRandomIndex]?.worth;
-      setTotalCardValueDealer(newValue);
+      setCards((prevalue) => [
+        ...prevalue.filter((_, index) => index !== newRandomIndex),
+      ]);
 
-      setCards((prevalue) =>
-        prevalue.filter((_, index) => index !== newRandomIndex)
-      );
-
-      console.log(
-        "Dealer's total card value:",
-        newValue,
-        "and the value of the whileLoop:",
-        dealerOpenCards,
-        "and the value of the randomIndex:",
-        newRandomIndex
-      );
-
-      // Break the loop if the dealer busts or reaches 21
-      if (indexWhileLoop > maxWhileLoop) {
-        break;
-      }
+      const newValue = cards?.[newRandomIndex]?.worth;
+      counter += newValue;
+      setTotalCardValueDealer(counter);
     }
+    setRandomCardIndex(null);
   }
 
   return (
