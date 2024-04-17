@@ -5,21 +5,3 @@ body {
   height: 100px;
   background-repeat: no-repeat;
 }
-
-.startGameContent {
-  /* The display variable can change so it's not accurate.*/
-  display: none;
-
-  align-items: center;
-  text-align: center;
-}
-
-.startMenuContent {
-  /* The display variable can change so it's not accurate.*/
-  margin-top: 50px;
-
-  display: block;
-
-  align-items: center;
-  text-align: center;
-}
