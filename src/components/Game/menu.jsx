@@ -7,6 +7,7 @@ export default function Game() {
   const [randomImgIndex, setRandomImgIndex] = useState(0);
   const [randomCardIndex, setRandomCardIndex] = useState(0);
   const [cardImg, setCardImg] = useState(0);
+  const [oldCardValue, setOldCardValue] = useState([]);
 
   const cardsData = [
     {
@@ -180,28 +181,63 @@ export default function Game() {
     },
   ];
 
-  function clickHandler() {
+  function clickHitHandler() {
+    //Making a random index for the random card draw
     const newRandomIndex = Math.floor(Math.random() * cardsData.length);
     setRandomCardIndex(newRandomIndex);
 
+    //Setting the random card index for a random img of a card
     const randomImgGen = Math.floor(Math.random() * 4);
     setRandomImgIndex(randomImgGen);
     setCardImg(randomImgIndex);
+
+    //For calculating cards value combined
+    let newOldValueData = cardsData[randomCardIndex].worth;
+    setOldCardValue((prevValue) => [...prevValue, newOldValueData]);
   }
+
+  function clickStandHandler() {
+    console.log("stand");
+  }
+
+  const totalCardValue = oldCardValue.reduce(
+    (accumulator, currentValue) => accumulator + currentValue,
+    0
+  );
+
+  if (totalCardValue > 21)
+    alert("You have lost your above 21 your amount is:", totalCardValue);
 
   return (
     <div className="startGameContent" id="gameContent">
       <Card
+        bool={false}
         image={cardsData[randomCardIndex].image}
-        value={cardsData[randomCardIndex].worth}
+        value={totalCardValue}
         name={cardsData[randomCardIndex].name}
       />
-      <button onClick={clickHandler} className="hit-card-button" type="button">
+      <button
+        onClick={clickHitHandler}
+        className="hit-card-button"
+        type="button"
+      >
         Hit
       </button>
-      <button className="hit-card-button" type="button">
+      <button
+        onClick={clickStandHandler}
+        className="hit-card-button"
+        type="button"
+      >
         Stand
       </button>
+
+      <div className="divider"></div>
+
+      <section className="drawn-cards">
+        <Card bool={true} image={oldCardValue[0]} name={oldCardValue[0]} />
+        <Card bool={true} image={oldCardValue[1]} name={oldCardValue[1]} />
+        <Card bool={true} image={oldCardValue[2]} name={oldCardValue[2]} />
+      </section>
     </div>
   );
 }

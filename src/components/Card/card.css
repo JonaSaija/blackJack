@@ -1,3 +1,11 @@
 .card-image {
-  width: 350px;
+  width: 150px;
+  margin-top: 200px;
+}
+
+.drawn-card {
+  width: 150px;
+  padding-left: 10%;
+  padding-right: 10%;
+  align-items: center;
 }
