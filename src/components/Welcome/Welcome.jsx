@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Test from "../Dealer/Dealer.jsx";
 import Game from "../Game/Game.jsx";
 import "./welcome.css";
 
@@ -14,7 +13,7 @@ export default function Welcome() {
 
   return (
     <>
-      {gameStart && <Test startGame={gameStart} />}
+      {gameStart && <Game />}
       {!gameStart && (
         <div className="startMenuContent" id="menuContent">
           <h1 className="game-title">Welcome to BlackJack</h1>
