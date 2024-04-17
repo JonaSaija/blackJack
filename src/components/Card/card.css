@@ -1,11 +1,18 @@
 .card-image {
+<<<<<<< Updated upstream
+  width: 350px;
+=======
   width: 150px;
-  margin-top: 200px;
 }
 
 .drawn-card {
+  margin-top: 20px;
+}
+
+.open-card {
   width: 150px;
   padding-left: 10%;
   padding-right: 10%;
-  align-items: center;
+  color: aliceblue;
+>>>>>>> Stashed changes
 }
