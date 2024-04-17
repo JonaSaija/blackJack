@@ -1,7 +1,6 @@
 .card-image {
-<<<<<<< Updated upstream
   width: 350px;
-=======
+
   width: 150px;
 }
 
@@ -14,5 +13,4 @@
   padding-left: 10%;
   padding-right: 10%;
   color: aliceblue;
->>>>>>> Stashed changes
 }
