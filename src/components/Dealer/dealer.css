@@ -1,0 +1,11 @@
+.dealer-game-content {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 20px;
+  align-items: center;
+  text-align: center;
+}
