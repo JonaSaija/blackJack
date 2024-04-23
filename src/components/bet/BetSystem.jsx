@@ -16,6 +16,7 @@ export default function BetSystem({ playerWin, blackJack }) {
     calculatingBetWinValue();
   } else {
     gain = Math.floor(betInput * 0);
+    setBetInput(gain);
   }
   return (
     <div>
@@ -25,7 +26,7 @@ export default function BetSystem({ playerWin, blackJack }) {
           type="number"
           placeholder="But your bet amount here!"
           onChange={(e) => setBetInput(Number(e.target.value))}
-          value={playerWin === false ? gain : betInput}
+          value={betInput}
           style={{ textAlign: `center` }}
         />
         <input
