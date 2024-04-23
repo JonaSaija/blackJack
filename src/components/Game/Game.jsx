@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import Card from "../Card/Card.jsx";
 import "./game.css";
 import "../../index.js";
-// import DealerContent from "../Dealer/Dealer.jsx";
 import cardsData from "../../data/cards.js";
+import BetSystem from "../bet/BetSystem.jsx";
 
 export default function Game() {
   //Variables for player
@@ -17,6 +17,8 @@ export default function Game() {
 
   //Both
   const [randomCardIndex, setRandomCardIndex] = useState(null);
+  const [wonByBlackJack, setWonByBlackJack] = useState(false);
+  const [playerWon, setPlayerWon] = useState(null);
   const [cards, setCards] = useState(cardsData);
   let minScoreMaxDraw = 15;
 
@@ -74,10 +76,13 @@ export default function Game() {
     if (totalCardValue === 21) {
       alert("You have a BLACKJACK!!!!!!!!:", totalCardValue);
       switchToDealer();
+      setWonByBlackJack(true);
+      setPlayerWon(true);
     }
 
     if (totalCardValue > 21) {
       alert("You have lost your above 21 your amount is:", totalCardValue);
+      setPlayerWon(false);
     }
 
     //Dealer win and lose conditions!!!!!!
@@ -88,17 +93,37 @@ export default function Game() {
     if (totalCardValueDealer > 21) {
       alert("Dealer has lost:", totalCardValueDealer);
     }
+    setDealersTurn(false);
+    setPlayerWon(false);
 
-    //Both player and dealer con
-    if (dealersTurn) {
-      if (totalCardValue > totalCardValueDealer) {
-        alert("You have won the game with a score of:", totalCardValue);
+    if (!dealersTurn && !playerTurn) {
+      //Both player and dealer con
+      if (totalCardValueDealer > 21) {
+        alert("Dealer has lost:", totalCardValueDealer);
+        setPlayerWon(true);
       }
-      if (totalCardValue < totalCardValueDealer && totalCardValueDealer < 21) {
-        alert(
-          "You lose the dealer wins the game with a score of:",
-          totalCardValue
-        );
+
+      if (totalCardValueDealer === totalCardValue) {
+        alert("Draw no one wins!!!!!!:", totalCardValue, totalCardValueDealer);
+        setPlayerWon(null);
+      }
+
+      //Both player and dealer con
+      if (dealersTurn) {
+        if (totalCardValue > totalCardValueDealer) {
+          alert("You have won the game with a score of:", totalCardValue);
+          setPlayerWon(true);
+        }
+        if (
+          totalCardValue < totalCardValueDealer &&
+          totalCardValueDealer < 21
+        ) {
+          alert(
+            "You lose the dealer wins the game with a score of:",
+            totalCardValue
+          );
+          setPlayerWon(false);
+        }
       }
     }
   }, [switchToDealer, totalCardValue, totalCardValueDealer, dealersTurn]);
@@ -129,7 +154,7 @@ export default function Game() {
             ))}
         </section>
       </div>
-      <div className="dealer-game-content">
+      <div className="player-game-content">
         {/* Card that is draw now */}
         <Card
           oldCard={false}
@@ -137,6 +162,8 @@ export default function Game() {
           value={totalCardValue}
           name={cards?.[randomCardIndex]?.name}
         />
+
+        <BetSystem blackJack={wonByBlackJack} playerWin={playerWon} />
 
         <button
           onClick={clickHitHandler}

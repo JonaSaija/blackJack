@@ -4,12 +4,18 @@ import "./welcome.css";
 
 export default function Welcome() {
   const [gameStart, setGameStart] = useState(false);
+  const [playerTurn, setPlayerTurn] = useState(true);
 
-  if (gameStart) {
-    document.body.style.backgroundImage = "url(./gameBackground.png)";
-  } else {
-    document.body.style.backgroundImage = "url(./background.png)";
-  }
+  useEffect(() => {
+    if (gameStart) {
+      document.body.style.backgroundImage = "url(./gameBackground.png)";
+      document.body.style.height = "100vh";
+      document.body.style.backgroundSize = "none";
+      document.body.style.backgroundRepeat = "repeat";
+    } else {
+      document.body.style.backgroundImage = "url(./background.png)";
+    }
+  }, [gameStart]); // Run this effect only when gameStart changes
 
   return (
     <>
