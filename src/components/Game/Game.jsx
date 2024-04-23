@@ -5,15 +5,16 @@ import "../../index.js";
 import cardsData from "../../data/cards.js";
 import BetSystem from "../bet/BetSystem.jsx";
 
-export default function Game() {
+export default function Game({ playerTurn, setPlayerTurn }) {
   //Variables for player
   const [openCards, setOpenCards] = useState([]);
   const [totalCardValue, setTotalCardValue] = useState(0);
-  const [dealersTurn, setDealersTurn] = useState(false);
+  const [randomCardIndex, setRandomCardIndex] = useState(null);
 
   //Variables for dealer
   const [totalCardValueDealer, setTotalCardValueDealer] = useState(0);
   const [dealerOpenCards, setDealerOpenCards] = useState([]);
+  const [dealerRandomCardIndex, setDealerRandomCardIndex] = useState(null);
 
   //Both
   const [randomCardIndex, setRandomCardIndex] = useState(null);
@@ -30,7 +31,7 @@ export default function Game() {
     while (counter < minScoreMaxDraw) {
       //Making a random index for the random card draw
       const newRandomIndex = Math.floor(Math.random() * cards?.length);
-      setRandomCardIndex(newRandomIndex);
+      setDealerRandomCardIndex(newRandomIndex);
 
       //Setting the random card that you hit to a array that saves the data of that card
       setDealerOpenCards((prevalue) => [...prevalue, cards?.[newRandomIndex]]);
@@ -44,7 +45,10 @@ export default function Game() {
       counter += newValue;
       setTotalCardValueDealer(counter);
     }
+    setTotalCardValueDealer(counter);
+    setDealerRandomCardIndex(null);
     setRandomCardIndex(null);
+    setDealersTurn(false);
   }
 
   function clickHitHandler() {
@@ -68,6 +72,7 @@ export default function Game() {
     switchToDealer();
     setOpenCards((prevalue) => [...prevalue, cards?.[randomCardIndex]]);
     console.log("stand");
+    setPlayerTurn(false);
   }
 
   //Game logic win and lose events
@@ -88,6 +93,7 @@ export default function Game() {
     //Dealer win and lose conditions!!!!!!
     if (totalCardValueDealer === 21) {
       alert("Dealer has a BLACKJACK!!!!!!!!:", totalCardValueDealer);
+      setDealersTurn(false);
     }
 
     if (totalCardValueDealer > 21) {
@@ -95,6 +101,7 @@ export default function Game() {
     }
     setDealersTurn(false);
     setPlayerWon(false);
+
 
     if (!dealersTurn && !playerTurn) {
       //Both player and dealer con
@@ -125,21 +132,40 @@ export default function Game() {
           setPlayerWon(false);
         }
       }
+      if (totalCardValueDealer === totalCardValue) {
+        alert("Draw no one wins!!!!!!:", totalCardValue, totalCardValueDealer);
+      }
+
+      if (totalCardValue > totalCardValueDealer) {
+        alert("You have won the game with a score of:", totalCardValue);
+      }
+
+      if (totalCardValue < totalCardValueDealer && totalCardValueDealer < 21) {
+        alert(
+          "You lose the dealer wins the game with a score of:",
+          totalCardValueDealer
+        );
+      }
     }
-  }, [switchToDealer, totalCardValue, totalCardValueDealer, dealersTurn]);
+  }, [
+    switchToDealer,
+    totalCardValue,
+    totalCardValueDealer,
+    dealersTurn,
+    playerTurn,
+  ]);
 
   return (
     <div>
       <div className="dealer-game-content">
         {/* Dealer selected card */}
-        {dealersTurn && (
-          <Card
-            oldCard={false}
-            image={cards?.[randomCardIndex]?.image}
-            value={totalCardValueDealer}
-            name={cards?.[randomCardIndex]?.name}
-          />
-        )}
+
+        <Card
+          oldCard={false}
+          image={cards?.[dealerRandomCardIndex]?.image}
+          value={totalCardValueDealer}
+          name={cards?.[dealerRandomCardIndex]?.name}
+        />
 
         {/* Dealer previous cards */}
         <section className="drawn-cards">
@@ -169,14 +195,14 @@ export default function Game() {
           onClick={clickHitHandler}
           className="hit-card-button"
           type="button"
-          disabled={dealersTurn}
+          disabled={!playerTurn}
         >
           Hit
         </button>
         <button
           onClick={clickStandHandler}
           className="hit-card-button"
-          disabled={dealersTurn}
+          disabled={!playerTurn}
           type="button"
         >
           Stand

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Game from "../Game/Game.jsx";
 import "./welcome.css";
 
@@ -19,7 +19,9 @@ export default function Welcome() {
 
   return (
     <>
-      {gameStart && <Game />}
+      {gameStart && (
+        <Game playerTurn={playerTurn} setPlayerTurn={setPlayerTurn} />
+      )}
       {!gameStart && (
         <div className="startMenuContent" id="menuContent">
           <h1 className="game-title">Welcome to BlackJack</h1>
