@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Game from "../Game/Game.jsx";
 import "./welcome.css";
 
@@ -6,21 +6,10 @@ export default function Welcome() {
   const [gameStart, setGameStart] = useState(false);
   const [playerTurn, setPlayerTurn] = useState(true);
 
-  useEffect(() => {
-    if (gameStart) {
-      document.body.style.backgroundImage = "url(./gameBackground.png)";
-      document.body.style.height = "100vh";
-      document.body.style.backgroundSize = "none";
-      document.body.style.backgroundRepeat = "repeat";
-    } else {
-      document.body.style.backgroundImage = "url(./background.png)";
-    }
-  }, [gameStart]); // Run this effect only when gameStart changes
-
   return (
-    <>
+    <div className={gameStart ? "backGroundGame" : "backGroundStart"}>
       {gameStart && (
-        <Game playerTurn={playerTurn} setPlayerTurn={setPlayerTurn} />
+        <Game playerTurn={playerTurn} handlePlayerTurn={setPlayerTurn} />
       )}
       {!gameStart && (
         <div className="startMenuContent" id="menuContent">
@@ -35,6 +24,6 @@ export default function Welcome() {
           </button>
         </div>
       )}
-    </>
+    </div>
   );
 }

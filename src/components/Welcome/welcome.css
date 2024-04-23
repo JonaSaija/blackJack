@@ -7,3 +7,15 @@
   flex-wrap: wrap;
   flex-direction: column;
 }
+
+.backGroundStart {
+  background-image: url("/public/background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
+.backGroundGame {
+  background-image: url("/public/gameBackground.png");
+  background-repeat: repeat;
+}

@@ -1,22 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import "./bet.css";
 
 export default function BetSystem({ playerWin, blackJack }) {
   const [betInput, setBetInput] = useState(0);
-  let gain;
+  const [totalBetGain, setTotalBetGain] = useState(0);
+  const [gain, setGain] = useState(0);
+
+  function totalBetWinValue() {
+    //For calculating cards value combined
+    const newValue = gain + totalBetGain;
+    setTotalBetGain(newValue);
+  }
+
+  useEffect(() => {
+    if (playerWin) {
+      calculatingBetWinValue();
+    } else {
+      setGain(Math.floor(betInput * 0));
+    }
+  }, [playerWin, gain, betInput]);
 
   function calculatingBetWinValue() {
     if (blackJack) {
-      gain = Math.floor(betInput * 2.5);
+      setGain(Math.floor(betInput * 2.5));
     } else {
-      gain = Math.floor(betInput * 2);
+      setGain(Math.floor(betInput * 2));
     }
+    totalBetWinValue();
   }
 
-  if (playerWin) {
-    calculatingBetWinValue();
-  } else {
-    gain = Math.floor(betInput * 0);
-  }
   return (
     <div>
       <section>
@@ -26,15 +38,17 @@ export default function BetSystem({ playerWin, blackJack }) {
           placeholder="But your bet amount here!"
           onChange={(e) => setBetInput(Number(e.target.value))}
           value={betInput}
-          style={{ textAlign: `center` }}
         />
-        <input
-          className="bet-input"
-          placeholder={gain}
-          readOnly
-          value={gain}
-          style={{ textAlign: `center` }}
-        />
+        <input className="bet-input" placeholder={gain} readOnly value={gain} />
+        <p>
+          Your total gain:
+          <input
+            className="bet-input"
+            readOnly
+            value={totalBetGain}
+            onChange={(e) => setTotalBetGain(e.target.value)}
+          />
+        </p>
       </section>
     </div>
   );

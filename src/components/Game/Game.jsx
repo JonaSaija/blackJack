@@ -3,9 +3,10 @@ import Card from "../Card/Card.jsx";
 import "./game.css";
 import "../../index.js";
 import cardsData from "../../data/cards.js";
-import BetSystem from "../bet/BetSystem.jsx";
+import BetSystem from "../Bet/BetSystem.jsx";
 
-export default function Game({ playerTurn, setPlayerTurn }) {
+//component for dealer, player, buttons/actions
+export default function Game({ playerTurn, handlePlayerTurn }) {
   //Variables for player
   const [openCards, setOpenCards] = useState([]);
   const [totalCardValue, setTotalCardValue] = useState(0);
@@ -17,12 +18,13 @@ export default function Game({ playerTurn, setPlayerTurn }) {
   const [dealerRandomCardIndex, setDealerRandomCardIndex] = useState(null);
   const [dealersTurn, setDealersTurn] = useState();
 
-  //Both
+  //Variables for both
   const [wonByBlackJack, setWonByBlackJack] = useState(false);
   const [playerWon, setPlayerWon] = useState(null);
   const [cards, setCards] = useState(cardsData);
   let minScoreMaxDraw = 15;
 
+  //Hit logic
   const switchToDealer = useCallback(() => {
     setDealersTurn(true);
     let counter = totalCardValueDealer;
@@ -51,6 +53,7 @@ export default function Game({ playerTurn, setPlayerTurn }) {
     setDealersTurn(false);
   }, [cards, minScoreMaxDraw, totalCardValueDealer]);
 
+  //Hit logic
   function clickHitHandler() {
     //Making a random index for the random card draw
     const newRandomIndex = Math.floor(Math.random() * cards?.length);
@@ -68,16 +71,19 @@ export default function Game({ playerTurn, setPlayerTurn }) {
     );
   }
 
+  //Stand logic
   function clickStandHandler() {
     switchToDealer();
     setOpenCards((prevalue) => [...prevalue, cards?.[randomCardIndex]]);
     console.log("stand");
-    setPlayerTurn(false);
+    handlePlayerTurn(false);
   }
 
   //Game logic win and lose events
   useEffect(() => {
     //Player win and lose conditions!!!!!!
+    //function for alert and playerwon boolean
+    //switch case
     if (totalCardValue === 21) {
       alert("You have a BLACKJACK!!!!!!!!:", totalCardValue);
       switchToDealer();
@@ -88,32 +94,24 @@ export default function Game({ playerTurn, setPlayerTurn }) {
     if (totalCardValue > 21) {
       alert("You have lost your above 21 your amount is:", totalCardValue);
       setPlayerWon(false);
+      handlePlayerTurn(false);
+      switchToDealer();
     }
 
     //Dealer win and lose conditions!!!!!!
     if (totalCardValueDealer === 21) {
       alert("Dealer has a BLACKJACK!!!!!!!!:", totalCardValueDealer);
+      setPlayerWon(false);
       setDealersTurn(false);
     }
 
     if (totalCardValueDealer > 21) {
       alert("Dealer has lost:", totalCardValueDealer);
+      setDealersTurn(false);
+      setPlayerWon(true);
     }
-    setDealersTurn(false);
-    setPlayerWon(false);
 
     if (!dealersTurn && !playerTurn) {
-      //Both player and dealer con
-      if (totalCardValueDealer > 21) {
-        alert("Dealer has lost:", totalCardValueDealer);
-        setPlayerWon(true);
-      }
-
-      if (totalCardValueDealer === totalCardValue) {
-        alert("Draw no one wins!!!!!!:", totalCardValue, totalCardValueDealer);
-        setPlayerWon(null);
-      }
-
       //Both player and dealer con
       if (dealersTurn) {
         if (totalCardValue > totalCardValueDealer) {
@@ -137,6 +135,8 @@ export default function Game({ playerTurn, setPlayerTurn }) {
 
       if (totalCardValue > totalCardValueDealer) {
         alert("You have won the game with a score of:", totalCardValue);
+        switchToDealer();
+        setPlayerWon(true);
       }
 
       if (totalCardValue < totalCardValueDealer && totalCardValueDealer < 21) {
@@ -144,18 +144,48 @@ export default function Game({ playerTurn, setPlayerTurn }) {
           "You lose the dealer wins the game with a score of:",
           totalCardValueDealer
         );
+        setPlayerWon(false);
       }
     }
   }, [
+    setPlayerWon,
     switchToDealer,
     totalCardValue,
     totalCardValueDealer,
     dealersTurn,
     playerTurn,
+    handlePlayerTurn,
   ]);
+
+  function clickResetGameHandler() {
+    //Variables for player
+    setOpenCards([]);
+    setTotalCardValue(0);
+    setRandomCardIndex(null);
+    handlePlayerTurn(true);
+
+    //Variables for dealer
+    setTotalCardValueDealer(0);
+    setDealerOpenCards([]);
+    setDealerRandomCardIndex(null);
+    setDealersTurn();
+
+    //Both
+    setWonByBlackJack(false);
+    setPlayerWon(null);
+  }
 
   return (
     <div>
+      <div className="reset-div">
+        <button
+          onClick={() => clickResetGameHandler()}
+          className="reset-button"
+          type="button"
+        >
+          Reset Game
+        </button>
+      </div>
       <div className="dealer-game-content">
         {/* Dealer selected card */}
 
