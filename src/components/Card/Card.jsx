@@ -9,7 +9,7 @@ export default function Card({ image, name, value, oldCard }) {
         <h3 className="card-value">{value}</h3>
       </div>
     );
-  else if (oldCard === true)
+  else
     return (
       <div className="open-card">
         <img src={image} alt={name} className="card-image" />
