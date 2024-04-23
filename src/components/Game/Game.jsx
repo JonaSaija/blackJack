@@ -17,6 +17,7 @@ export default function Game({ playerTurn, setPlayerTurn }) {
   const [dealerRandomCardIndex, setDealerRandomCardIndex] = useState(null);
 
   //Both
+  const [randomCardIndex, setRandomCardIndex] = useState(null);
   const [wonByBlackJack, setWonByBlackJack] = useState(false);
   const [playerWon, setPlayerWon] = useState(null);
   const [cards, setCards] = useState(cardsData);
@@ -100,6 +101,7 @@ export default function Game({ playerTurn, setPlayerTurn }) {
     }
     setDealersTurn(false);
     setPlayerWon(false);
+
 
     if (!dealersTurn && !playerTurn) {
       //Both player and dealer con
