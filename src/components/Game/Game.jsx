@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Card from "../Card/Card.jsx";
 import "./game.css";
 import "../../index.js";
@@ -23,7 +23,7 @@ export default function Game({ playerTurn, setPlayerTurn }) {
   const [cards, setCards] = useState(cardsData);
   let minScoreMaxDraw = 15;
 
-  function switchToDealer() {
+  const switchToDealer = useCallback(() => {
     setDealersTurn(true);
     let counter = totalCardValueDealer;
 
@@ -49,7 +49,7 @@ export default function Game({ playerTurn, setPlayerTurn }) {
     setDealerRandomCardIndex(null);
     setRandomCardIndex(null);
     setDealersTurn(false);
-  }
+  }, [cards, minScoreMaxDraw, totalCardValueDealer]);
 
   function clickHitHandler() {
     //Making a random index for the random card draw
