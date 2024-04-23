@@ -16,7 +16,6 @@ export default function BetSystem({ playerWin, blackJack }) {
     calculatingBetWinValue();
   } else {
     gain = Math.floor(betInput * 0);
-    setBetInput(gain);
   }
   return (
     <div>
